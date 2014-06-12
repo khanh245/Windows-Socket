@@ -33,8 +33,8 @@ void client()
 	int i = 0;
 	ofstream file("ThreadedTestClient.txt");
 
-	for (i; i < 10000; i++) {
-
+	while (sockClient.isDataAvail() || i < 10000)
+	{
 		//int time = rand() % 4 + 1;
 
 		const char* rest = "|1|10.220.8.170|6500|C'est La Vie|3|";
@@ -89,6 +89,7 @@ void client()
 		res = clock() - res;
 		mRes += res;
 
+		++i;
 		file << realMsg << endl;
 		file << recMessage << endl << endl;
 	}
@@ -104,15 +105,6 @@ void client()
 	file << "Transaction avg. = " << mRes / 10000 << endl;
 	file << "Your name: " << endl;
 	file << "Name of the other student = " << endl;
-
-	file << "Late bloomers: " << endl;
-	while (sockClient.isDataAvail() || i < 10000)
-	{
-		string message = "";
-		sockClient.RecvData(message);
-
-		file << message << endl;
-	}
 
 	int shut = sockClient.Shutdown(0);
 	int close = sockClient.CloseConnection();
@@ -165,7 +157,7 @@ void server()
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
 		stringstream ss, ss3;
-		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << server.getIP() << "|" << server.getPort() << "|Good-OIT-Req|";
+		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << tokens[6] << "|" << tokens[7] << "|Good-OIT-Req|";
 		string temp = ss.str();
 		const char* message = temp.c_str();
 
