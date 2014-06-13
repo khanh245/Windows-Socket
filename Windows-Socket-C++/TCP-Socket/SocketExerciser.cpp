@@ -29,11 +29,11 @@ void client()
 	int i = 0;
 	std::ofstream file("ThreadedTestClient.log");
 
-	while (sockClient.isDataAvail() || i < 10000)
+	while (sockClient.isDataAvail() || i < 2)
 	{
 		//int time = rand() % 4 + 1;
 
-		const char* rest = "|1|10.220.8.170|6500|C'est La Vie|3|";
+		const char* rest = "|C'est La Vie|3|";
 		char* mess = "|NguyenK519|19-9519|";
 		//char* mess = "|NguyenK|18-8317|";
 
@@ -61,7 +61,7 @@ void client()
 		GetLocalTime(&st);
 		char timestamp[16] = { 0 };
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-		ss << "REQ|" << timestamp << "|ReqID564530" << i << mess << 0 << "|" << sockClient.getIP() << "|" << port << rest;
+		ss << "REQ|" << timestamp << "|ReqID564530" << i << mess << 0 << "|" << sockClient.getIP() << "|" << sockClient.getPort() << "|1|" << sockClient.getServerIP() << "|" << sockClient.getServerPort() << rest;
 		std::string temp = ss.str();
 		const char* message = temp.c_str();
 
@@ -101,9 +101,6 @@ void client()
 	file << "Transaction avg. = " << mRes / 10000 << std::endl;
 	file << "Your name: " << std::endl;
 	file << "Name of the other student = " << std::endl;
-
-	int shut = sockClient.Shutdown(0);
-	int close = sockClient.CloseConnection();
 
 	file.close();
 }
