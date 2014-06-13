@@ -12,15 +12,18 @@
 
 #include "Socket.h"
 
-class ServerSocket : public Socket
+namespace Kronos
 {
-public:
-	void Listen();
-	void Bind(int port);
-	void StartHosting(int port);
+	class ServerSocket : public Socket
+	{
+	public:
+		void Listen();
+		void Bind(int port);
+		void StartHosting(int port);
 
-	char* getClientIP(const int& id = 0) const;
-	int	getClientPort(const int& id = 0) const;
-};
+		char* getClientIP(const int& id = 0) const;
+		int	getClientPort(const int& id = 0) const;
+	};
+}
 
 #endif

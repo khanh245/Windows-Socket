@@ -6,7 +6,7 @@
 #include <fstream>
 #include <ctime>
 
-Socket::Socket()
+Kronos::Socket::Socket()
 {
 	memset(&myAddress, 0, sizeof(sockaddr_in));
 	memset(&otherAddress, 0, sizeof(sockaddr_in));
@@ -27,7 +27,7 @@ Socket::Socket()
 	myBackup = mySocket;
 }
 
-Socket::~Socket()
+Kronos::Socket::~Socket()
 {
 	if (mIP) memset(mIP, 0, sizeof(mIP));
 
@@ -36,7 +36,7 @@ Socket::~Socket()
 	WSACleanup();
 }
 
-int Socket::SendData(std::string& buffer)
+int Kronos::Socket::SendData(std::string& buffer)
 {
 	int rc = send(mySocket, buffer.c_str(), buffer.length(), 0);
 	if (rc < 0)
@@ -49,7 +49,7 @@ int Socket::SendData(std::string& buffer)
 	return rc;
 }
 
-bool Socket::isDataAvail()
+bool Kronos::Socket::isDataAvail()
 {
 	timeval timeout;
 	memset(&timeout, 0, sizeof(timeval));
@@ -69,7 +69,7 @@ bool Socket::isDataAvail()
 	return false;
 }
 
-int Socket::RecvDelayed(std::string& buff, const int& _to)
+int Kronos::Socket::RecvDelayed(std::string& buff, const int& _to)
 {
 	int rc = 0;
 	char buf[256] = "";
@@ -125,7 +125,7 @@ int Socket::RecvDelayed(std::string& buff, const int& _to)
 	return rc;
 }
 
-int Socket::RecvData(std::string& buff)
+int Kronos::Socket::RecvData(std::string& buff)
 {
 	char buf[256];
 
@@ -148,7 +148,7 @@ int Socket::RecvData(std::string& buff)
 	return rc;
 }
 
-int Socket::CloseConnection()
+int Kronos::Socket::CloseConnection()
 {
 	int rc = closesocket(mySocket);
 	mySocket = myBackup;
@@ -156,7 +156,7 @@ int Socket::CloseConnection()
 	return rc;
 }
 
-int Socket::Shutdown(const int& how)
+int Kronos::Socket::Shutdown(const int& how)
 {
 	int rc = shutdown(mySocket, how);
 	mySocket = myBackup;
@@ -164,7 +164,7 @@ int Socket::Shutdown(const int& how)
 	return rc;
 }
 
-void Socket::GetAndSendMessage()
+void Kronos::Socket::GetAndSendMessage()
 {
 	std::string message;
 	std::cout << "Send > ";

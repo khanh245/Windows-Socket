@@ -1,12 +1,12 @@
 #include "ServerSocket.h"
 
-void ServerSocket::StartHosting(int port)
+void Kronos::ServerSocket::StartHosting(int port)
 {
 	Bind(port);
 	Listen();
 }
 
-void ServerSocket::Listen()
+void Kronos::ServerSocket::Listen()
 {
 	std::cout << std::endl << "ServerSocket: Listening for client..." << std::endl;
 
@@ -32,7 +32,7 @@ void ServerSocket::Listen()
 	mySocket = acceptSocket;
 }
 
-void ServerSocket::Bind(int port)
+void Kronos::ServerSocket::Bind(int port)
 {
 	myAddress.sin_family = AF_INET;
 	myAddress.sin_addr.s_addr = inet_addr("0.0.0.0");
@@ -59,12 +59,12 @@ void ServerSocket::Bind(int port)
 	mPort = htons(myAddress.sin_port);
 }
 
-char* ServerSocket::getClientIP(const int& id) const
+char* Kronos::ServerSocket::getClientIP(const int& id) const
 {
 	return inet_ntoa(otherAddress.sin_addr);
 }
 
-int ServerSocket::getClientPort(const int& id) const
+int Kronos::ServerSocket::getClientPort(const int& id) const
 {
 	return htons(otherAddress.sin_port);
 }

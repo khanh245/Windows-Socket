@@ -1,6 +1,6 @@
 #include "ClientSocket.h"
 
-void ClientSocket::ConnectToServer(const char *ipAddress, int port)
+void Kronos::ClientSocket::ConnectToServer(const char *ipAddress, int port)
 {
 	myAddress.sin_family = AF_INET;
 	myAddress.sin_addr.s_addr = inet_addr(ipAddress);
@@ -30,12 +30,12 @@ void ClientSocket::ConnectToServer(const char *ipAddress, int port)
 	std::cout << "Connected..." << std::endl;
 }
 
-char* ClientSocket::getServerIP() const
+char* Kronos::ClientSocket::getServerIP() const
 {
 	return inet_ntoa(otherAddress.sin_addr);
 }
 
-int ClientSocket::getServerPort() const
+int Kronos::ClientSocket::getServerPort() const
 {
 	return htons(otherAddress.sin_port);
 }

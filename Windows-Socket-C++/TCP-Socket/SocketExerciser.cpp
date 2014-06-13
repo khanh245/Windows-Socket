@@ -20,7 +20,7 @@ void client()
 	srand((unsigned int)time(NULL));
 
 	bool ready = false;
-	ClientSocket sockClient;
+	Kronos::ClientSocket sockClient;
 	SYSTEMTIME st;
 
 	std::cout << "Attempting to connect..." << std::endl;
@@ -113,7 +113,7 @@ void server()
 	clock_t mRes = 0;
 
 	std::ofstream file("MultithreadedServer.Test.log");
-	ServerSocket server;
+	Kronos::ServerSocket server;
 
 	server.StartHosting(2605);
 	SYSTEMTIME st;  

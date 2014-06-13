@@ -12,13 +12,16 @@
 
 #include "Socket.h"
 
-class ClientSocket : public Socket
+namespace Kronos
 {
-public:
-	void ConnectToServer(const char *ipAddress, int port);
+	class ClientSocket : public Socket
+	{
+	public:
+		void ConnectToServer(const char *ipAddress, int port);
 
-	char* getServerIP() const;
-	int	getServerPort() const;
-};
+		char* getServerIP() const;
+		int	getServerPort() const;
+	};
+}
 
 #endif
