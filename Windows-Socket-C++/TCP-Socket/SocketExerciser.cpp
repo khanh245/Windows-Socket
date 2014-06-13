@@ -27,7 +27,7 @@ void client()
 	sockClient.ConnectToServer("127.0.0.1", 2605);
 
 	int i = 0;
-	std::ofstream file("ThreadedTestClient.txt");
+	std::ofstream file("ThreadedTestClient.log");
 
 	while (sockClient.isDataAvail() || i < 10000)
 	{
@@ -115,7 +115,7 @@ void server()
 	clock_t mReq = 0;
 	clock_t mRes = 0;
 
-	std::ofstream file("MultithreadeServer.Test.txt");
+	std::ofstream file("MultithreadedServer.Test.log");
 	ServerSocket server;
 
 	server.StartHosting(2605);
@@ -192,9 +192,6 @@ void server()
 	file << "Your name: " << std::endl;
 	file << "Name of the other student = " << std::endl;
 	file.close();
-
-	server.CloseConnection();
-	server.Shutdown(0);
 }
 
 int main()
