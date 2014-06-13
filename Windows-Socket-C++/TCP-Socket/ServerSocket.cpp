@@ -28,14 +28,6 @@ void ServerSocket::Listen()
 		cout << "ServerSocket: Client connected" << getClientIP() << ":" << getClientPort() << endl;
 	}
 
-	len = sizeof(myAddress);
-	getsockname(mySocket, (sockaddr*)&myAddress, &len);
-	char* temp = inet_ntoa(myAddress.sin_addr);
-	mIP = new char[strlen(temp) + 1];
-	memset(mIP, 0, strlen(mIP));
-	memcpy(mIP, temp, strlen(temp));
-	mPort = htons(myAddress.sin_port);
-
 	len = sizeof(otherAddress);
 	getpeername(acceptSocket, (sockaddr*)&otherAddress, &len);
 	mySocket = acceptSocket;
@@ -61,11 +53,11 @@ void ServerSocket::Bind(int port)
 	
 	int i = 0;
 	in_addr addr;
-	while (hosts->h_addr_list[i] != 0) {
+	while (hosts->h_addr_list[i] != 0) i++;
 
-		addr.s_addr = *(u_long *)hosts->h_addr_list[i++];
-		printf("\tIP Address #%d: %s\n", i, inet_ntoa(addr));
-	}
+	addr.s_addr = *(u_long *)hosts->h_addr_list[i-1];
+	mIP = inet_ntoa(addr);
+	mPort = htons(myAddress.sin_port);
 }
 
 char* ServerSocket::getClientIP(const int& id) const

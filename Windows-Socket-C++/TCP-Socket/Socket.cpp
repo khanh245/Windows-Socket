@@ -34,7 +34,7 @@ Socket::Socket()
 
 Socket::~Socket()
 {
-	if (mIP) delete mIP;
+	if (mIP) memset(mIP, 0, sizeof(mIP));
 
 	Shutdown(0);
 	CloseConnection();

@@ -28,7 +28,7 @@ void client()
 	SYSTEMTIME st;
 
 	cout << "Attempting to connect..." << endl;
-	sockClient.ConnectToServer("192.168.0.107", 2605);
+	sockClient.ConnectToServer("127.0.0.1", 2605);
 
 	int i = 0;
 	ofstream file("ThreadedTestClient.txt");
@@ -119,7 +119,7 @@ void server()
 	clock_t mReq = 0;
 	clock_t mRes = 0;
 
-	ofstream file("Lab4.S1.txt");
+	ofstream file("MultithreadeServer.Test.txt");
 	ServerSocket server;
 
 	server.StartHosting(2605);
@@ -157,7 +157,7 @@ void server()
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
 		stringstream ss, ss3;
-		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << tokens[6] << "|" << tokens[7] << "|Good-OIT-Req|";
+		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << server.getIP() << "|" << server.getPort() << "|Good-OIT-Req|";
 		string temp = ss.str();
 		const char* message = temp.c_str();
 
@@ -196,6 +196,9 @@ void server()
 	file << "Your name: " << endl;
 	file << "Name of the other student = " << endl;
 	file.close();
+
+	server.CloseConnection();
+	server.Shutdown(0);
 }
 
 int main()
