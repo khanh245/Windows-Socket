@@ -17,8 +17,9 @@ void ServerSocket::Listen()
 	}
 
 	std::cout << std::endl << "ServerSocket: Accepting connection..." << std::endl;
+	int len = sizeof(otherAddress);
 
-	acceptSocket = accept(mySocket, (sockaddr*)&otherAddress, (int*)sizeof(otherAddress));
+	acceptSocket = accept(mySocket, (sockaddr*)&otherAddress, &len);
 	std::cout << "ServerSocket: Client connected: " << getClientIP() << ":" << getClientPort() << std::endl;
 
 	while (acceptSocket < 0)
