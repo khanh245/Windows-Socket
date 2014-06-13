@@ -15,9 +15,13 @@ namespace Kronos
 	class IRunnable
 	{
 	public:
+		IRunnable();
 		virtual ~IRunnable();
 
-		virtual int Start();
+		int Start();
+
+	private:
+		IRunnable(const IRunnable& RHS);
 	};
 }
 

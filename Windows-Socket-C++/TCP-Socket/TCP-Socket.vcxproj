@@ -65,10 +65,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientSocket.cpp" />
+    <ClCompile Include="IRunnable.cpp" />
     <ClCompile Include="KronosPayload.cpp" />
     <ClCompile Include="ServerSocket.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketExerciser.cpp" />
+    <ClCompile Include="Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSocket.h" />

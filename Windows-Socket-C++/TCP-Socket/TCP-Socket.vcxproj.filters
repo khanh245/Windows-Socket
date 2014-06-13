@@ -33,6 +33,12 @@
     <ClCompile Include="SocketExerciser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IRunnable.cpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSocket.h">

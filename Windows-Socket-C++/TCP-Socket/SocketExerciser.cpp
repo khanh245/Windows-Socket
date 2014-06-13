@@ -10,6 +10,8 @@
 #include "ServerSocket.h"
 #include "ClientSocket.h"
 
+#include "Thread.h"
+
 void client()
 {
 	clock_t req = 0;
@@ -88,6 +90,8 @@ void client()
 		++i;
 		file << realMsg << std::endl;
 		file << recMessage << std::endl << std::endl;
+
+		if (i == 2) break;
 	}
 
 	file << "Requests transmitted = 10000" << std::endl;
@@ -194,6 +198,8 @@ void server()
 int main()
 {
 	//client();
+
+	Kronos::Thread(new Kronos::IRunnable()).Start();
 	server();
 
 	return 0;

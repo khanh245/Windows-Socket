@@ -6,7 +6,7 @@
 	Name: Kronos Thread Class
 	Purpose: Provide a wrapper for C++11 thread class so that it would
 	be easy to use thread (Java-like thread), implemented IRunnable
-**********************************************************************/
+	**********************************************************************/
 
 #ifndef _KRONOS_THREAD_H_
 #define _KRONOS_THREAD_H_
@@ -18,13 +18,17 @@ namespace Kronos
 	{
 	public:
 		Thread();
+		Thread(IRunnable* runnableObj);
 		virtual ~Thread();
+
+	private:
+		Thread(const Thread& RHS);
+
+		unsigned m_ThreadID;
+		void* _func;
 
 	protected:
 
-	private:
-		unsigned m_ThreadID;
-		void* _func;
 	};
 }
 
