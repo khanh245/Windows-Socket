@@ -27,8 +27,9 @@ void client()
 	ClientSocket sockClient;
 	SYSTEMTIME st;
 
+	/// ANDY'S IP: 10.220.9.150
 	cout << "Attempting to connect..." << endl;
-	sockClient.ConnectToServer("127.0.0.1", 2605);
+	sockClient.ConnectToServer("10.220.9.150", 2605);
 
 	int i = 0;
 	ofstream file("ThreadedTestClient.txt");
@@ -128,7 +129,7 @@ void server()
 	string reqMsg = "";
 
 
-	while (server.isDataAvail() || count != 2)
+	while (server.isDataAvail() || count != 10000)
 	{
 		req = clock();
 		int result = server.RecvData(reqMsg);
@@ -180,7 +181,7 @@ void server()
 
 		file << realMsg << endl;
 
-		if (count == 2) break;
+		if (count == 10000) break;
 	}
 
 	file << endl;

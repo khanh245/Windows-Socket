@@ -18,8 +18,7 @@
 
 #include <iostream>
 #include <WinSock2.h>
-
-using namespace std;
+#include <thread>
 
 class Socket
 {
@@ -35,14 +34,18 @@ protected:
 	int mPort;
 	char* mIP;
 
+	std::thread mListeningThread;
+
 public:
 	Socket();
 	~Socket();
 
-	int SendData(string&);
-	int RecvData(string&);
-	int RecvDelayed(string&, const int& _timeout = 3);
+	int SendData(std::string&);
+	int RecvData(std::string&);
+	int RecvDelayed(std::string&, const int& _timeout = 3);
+
 	bool isDataAvail();
+	bool incomingConnection();
 
 	int CloseConnection();
 	int Shutdown(const int& how);

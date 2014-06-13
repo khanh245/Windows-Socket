@@ -14,7 +14,7 @@ Socket::Socket()
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != NO_ERROR)
 	{
-		cerr << "Socket: Error with WSAStartup\n";
+		std::cerr << "Socket: Error with WSAStartup\n";
 		system("pause");
 		WSACleanup();
 		exit(10);
@@ -23,7 +23,7 @@ Socket::Socket()
 	mySocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (mySocket == INVALID_SOCKET)
 	{
-		cerr << "Socket: Error creating socket" << endl;
+		std::cerr << "Socket: Error creating socket" << std::endl;
 		system("pause");
 		WSACleanup();
 		exit(11);
@@ -41,16 +41,16 @@ Socket::~Socket()
 	WSACleanup();
 }
 
-int Socket::SendData(string& buffer)
+int Socket::SendData(std::string& buffer)
 {
 	int rc = send(mySocket, buffer.c_str(), buffer.length(), 0);
 	if (rc < 0)
 	{
-		cerr << "Socket: Error sending data." << endl;
+		std::cerr << "Socket: Error sending data." << std::endl;
 		return -1;
 	}
 
-	cerr << "Socket: Sent " << rc << " bytes." << endl;
+	std::cerr << "Socket: Sent " << rc << " bytes." << std::endl;
 	return rc;
 }
 
@@ -65,7 +65,7 @@ bool Socket::isDataAvail()
 	int selectResult = select(mySocket, &ready, 0, 0, &timeout);
 
 	if (selectResult < 0)
-		cerr << "Socket: Error in select()." << endl;
+		std::cerr << "Socket: Error in select()." << std::endl;
 	else if (selectResult >= 0)
 	{
 		if (FD_ISSET(mySocket, &ready))
@@ -75,7 +75,33 @@ bool Socket::isDataAvail()
 	return false;
 }
 
-int Socket::RecvDelayed(string& buff, const int& _to)
+bool Socket::incomingConnection()
+{
+	fd_set set;
+	struct timeval timeout;
+	int rv;
+	FD_ZERO(&set); 
+	FD_SET(mySocket, &set); 
+
+	timeout.tv_sec = 20;
+	timeout.tv_usec = 0;
+
+	rv = select(mySocket, &set, NULL, NULL, &timeout);
+	if (rv == -1)
+	{
+		std::cerr << "ServerSocket: Select() error in listening" << std::endl;
+		return false;
+	}
+	else if (rv == 0)
+	{
+		std::cerr << "ServerSocket: Timeout on incoming connection" << std::endl;
+		return false;
+	}
+	
+	return true;
+}
+
+int Socket::RecvDelayed(std::string& buff, const int& _to)
 {
 	int rc = 0;
 	char buf[256] = "";
@@ -86,17 +112,17 @@ int Socket::RecvDelayed(string& buff, const int& _to)
 	fd_set readfds;
 	FD_ZERO(&readfds);
 	FD_SET(mySocket, &readfds);
-	stringstream ss;
+	std::stringstream ss;
 
 	int selectResult = select(mySocket, &readfds, 0, 0, &timeout);
 
 	switch (selectResult)
 	{
 	case -1:
-		cout << "Error occurred in select()." << endl;
+		std::cout << "Error occurred in select()." << std::endl;
 		return -1;
 	case 0:
-		cerr << "Timeout." << endl;
+		std::cerr << "Timeout." << std::endl;
 		break;
 	default:
 		while (rc == 0) {
@@ -105,7 +131,7 @@ int Socket::RecvDelayed(string& buff, const int& _to)
 				rc = RecvData(buff);
 				if (rc < 0)
 				{
-					cerr << "Error trying to read from SOCKET." << endl;
+					std::cerr << "Error trying to read from SOCKET." << std::endl;
 					break;
 				}
 				/*
@@ -131,7 +157,7 @@ int Socket::RecvDelayed(string& buff, const int& _to)
 	return rc;
 }
 
-int Socket::RecvData(string& buff)
+int Socket::RecvData(std::string& buff)
 {
 	char buf[256];
 
@@ -144,13 +170,13 @@ int Socket::RecvData(string& buff)
 	rc = recv(mySocket, buf, len, 0);
 	if (rc < 0) return -1;
 
-	stringstream ss1;
+	std::stringstream ss1;
 	for (int i = 0; i < rc; i++)
 		ss1 << buf[i];
 	buff.clear();
 	buff = ss1.str();
 
-	cerr << "Socket: Received " << rc << " bytes." << endl;
+	std::cerr << "Socket: Received " << rc << " bytes." << std::endl;
 	return rc;
 }
 
@@ -172,11 +198,11 @@ int Socket::Shutdown(const int& how)
 
 void Socket::GetAndSendMessage()
 {
-	string message;
-	cout << "Send > ";
-	getline(cin, message, '\n');
+	std::string message;
+	std::cout << "Send > ";
+	std::getline(std::cin, message, '\n');
 	SendData(message);
 
 	///without this, it gets the return char from the last cin and ignores the following one!
-	cin.ignore();	
+	std::cin.ignore();	
 }

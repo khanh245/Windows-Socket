@@ -8,24 +8,27 @@ void ServerSocket::StartHosting(int port)
 
 void ServerSocket::Listen()
 {
-	cout << endl << "ServerSocket: Listening for client..." << endl;
+	std::cout << std::endl << "ServerSocket: Listening for client..." << std::endl;
 
 	if (listen(mySocket, 5) == SOCKET_ERROR)
 	{
-		cerr << "ServerSocket: Error listening on socket\n";
+		std::cerr << "ServerSocket: Error listening on socket\n";
 		WSACleanup();
 	}
 
-	cout << endl << "ServerSocket: Accepting connection..." << endl;
+	std::cout << std::endl << "ServerSocket: Accepting connection..." << std::endl;
 	int len = sizeof(otherAddress);
 
-	acceptSocket = accept(mySocket, (sockaddr*)&otherAddress, &len);
-	cout << "ServerSocket: Client connected: " << getClientIP() << ":" << getClientPort() << endl;
+	while (incomingConnection())
+	{
+		acceptSocket = accept(mySocket, (sockaddr*)&otherAddress, &len);
+		std::cout << "ServerSocket: Client connected: " << getClientIP() << ":" << getClientPort() << std::endl;
+	}
 
 	while (acceptSocket < 0)
 	{
 		acceptSocket = accept(myBackup, NULL, NULL);
-		cout << "ServerSocket: Client connected" << getClientIP() << ":" << getClientPort() << endl;
+		std::cout << "ServerSocket: Client connected" << getClientIP() << ":" << getClientPort() << std::endl;
 	}
 
 	len = sizeof(otherAddress);
@@ -40,9 +43,9 @@ void ServerSocket::Bind(int port)
 	myAddress.sin_port = htons(port);
 	int len = sizeof(myAddress);
 
-	if (bind(mySocket, (sockaddr*)&myAddress, len) == SOCKET_ERROR)
+	if (bind(mySocket, (sockaddr*)&myAddress, sizeof(myAddress)) == SOCKET_ERROR)
 	{
-		cerr << "ServerSocket: Failed to connect\n";
+		std::cerr << "ServerSocket: Failed to connect\n";
 		WSACleanup();
 	}
 
@@ -50,12 +53,12 @@ void ServerSocket::Bind(int port)
 	gethostname(hn, sizeof(hn));
 	struct hostent* hosts;
 	hosts = gethostbyname(hn);
-	
+
 	int i = 0;
 	in_addr addr;
 	while (hosts->h_addr_list[i] != 0) i++;
 
-	addr.s_addr = *(u_long *)hosts->h_addr_list[i-1];
+	addr.s_addr = *(u_long *)hosts->h_addr_list[i - 1];
 	mIP = inet_ntoa(addr);
 	mPort = htons(myAddress.sin_port);
 }
