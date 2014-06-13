@@ -19,8 +19,6 @@
 #include <iostream>
 #include <WinSock2.h>
 
-using namespace std;
-
 class Socket
 {
 protected:
@@ -39,9 +37,9 @@ public:
 	Socket();
 	~Socket();
 
-	int SendData(string&);
-	int RecvData(string&);
-	int RecvDelayed(string&, const int& _timeout = 3);
+	int SendData(std::string&);
+	int RecvData(std::string&);
+	int RecvDelayed(std::string&, const int& _timeout = 3);
 	bool isDataAvail();
 
 	int CloseConnection();

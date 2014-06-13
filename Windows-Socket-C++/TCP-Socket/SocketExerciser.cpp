@@ -1,18 +1,14 @@
 ﻿#include <WinSock2.h>
 #include <time.h>
-#include <thread>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 
 #include "Socket.h"
 #include "ServerSocket.h"
 #include "ClientSocket.h"
-
-using namespace std;
 
 void client()
 {
@@ -27,11 +23,11 @@ void client()
 	ClientSocket sockClient;
 	SYSTEMTIME st;
 
-	cout << "Attempting to connect..." << endl;
+	std::cout << "Attempting to connect..." << std::endl;
 	sockClient.ConnectToServer("127.0.0.1", 2605);
 
 	int i = 0;
-	ofstream file("ThreadedTestClient.txt");
+	std::ofstream file("ThreadedTestClient.txt");
 
 	while (sockClient.isDataAvail() || i < 10000)
 	{
@@ -60,13 +56,13 @@ void client()
 		}*/
 
 		int port = sockClient.getPort();
-		stringstream ss, ss3;
+		std::stringstream ss, ss3;
 
 		GetLocalTime(&st);
 		char timestamp[16] = { 0 };
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 		ss << "REQ|" << timestamp << "|ReqID564530" << i << mess << 0 << "|" << sockClient.getIP() << "|" << port << rest;
-		string temp = ss.str();
+		std::string temp = ss.str();
 		const char* message = temp.c_str();
 
 		int l = strlen(message);
@@ -76,8 +72,8 @@ void client()
 		b2 = (l >> 8) & 255;
 		ss3 << b2 << b1 << message;
 
-		string realMsg = ss3.str();
-		string recMessage = "";
+		std::string realMsg = ss3.str();
+		std::string recMessage = "";
 
 		req = clock();
 		sockClient.SendData(realMsg);
@@ -90,21 +86,21 @@ void client()
 		mRes += res;
 
 		++i;
-		file << realMsg << endl;
-		file << recMessage << endl << endl;
+		file << realMsg << std::endl;
+		file << recMessage << std::endl << std::endl;
 	}
 
-	file << "Requests transmitted = 10000" << endl;
-	file << "Responses received = 10000" << endl;
-	file << "Req. run duration (ms) = " << mReq << endl;
-	file << "Res. run duration (ms) = " << mRes << endl;
-	file << "Trans. run duration (ms) = " << mRes - 0 << endl;
-	file << "Actual req. pace = " << mReq / 10000 << endl;
-	file << "Actual res. pace = " << mRes / 10000 << endl;
-	file << "Config. pace = " << 3 << endl;
-	file << "Transaction avg. = " << mRes / 10000 << endl;
-	file << "Your name: " << endl;
-	file << "Name of the other student = " << endl;
+	file << "Requests transmitted = 10000" << std::endl;
+	file << "Responses received = 10000" << std::endl;
+	file << "Req. run duration (ms) = " << mReq << std::endl;
+	file << "Res. run duration (ms) = " << mRes << std::endl;
+	file << "Trans. run duration (ms) = " << mRes - 0 << std::endl;
+	file << "Actual req. pace = " << mReq / 10000 << std::endl;
+	file << "Actual res. pace = " << mRes / 10000 << std::endl;
+	file << "Config. pace = " << 3 << std::endl;
+	file << "Transaction avg. = " << mRes / 10000 << std::endl;
+	file << "Your name: " << std::endl;
+	file << "Name of the other student = " << std::endl;
 
 	int shut = sockClient.Shutdown(0);
 	int close = sockClient.CloseConnection();
@@ -119,13 +115,13 @@ void server()
 	clock_t mReq = 0;
 	clock_t mRes = 0;
 
-	ofstream file("MultithreadeServer.Test.txt");
+	std::ofstream file("MultithreadeServer.Test.txt");
 	ServerSocket server;
 
 	server.StartHosting(2605);
 	SYSTEMTIME st;  
 	int count = 0;
-	string reqMsg = "";
+	std::string reqMsg = "";
 
 
 	while (server.isDataAvail() || count != 2)
@@ -139,26 +135,26 @@ void server()
 			count++;
 		else continue;
 
-		file << reqMsg << endl;
+		file << reqMsg << std::endl;
 
-		stringstream iss(reqMsg.c_str());
-		string tmp;
-		vector<string> tokens;
+		std::stringstream iss(reqMsg.c_str());
+		std::string tmp;
+		std::vector<std::string> tokens;
 		while (getline(iss, tmp, '|'))
 		{
 			tokens.push_back(tmp);
 		}
 
 		char* sendMessage = "RSP|";
-		string reqID = tokens[2];
+		std::string reqID = tokens[2];
 
 		GetLocalTime(&st);
 		char timestamp[16] = { 0 };
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
-		stringstream ss, ss3;
+		std::stringstream ss, ss3;
 		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << server.getIP() << "|" << server.getPort() << "|Good-OIT-Req|";
-		string temp = ss.str();
+		std::string temp = ss.str();
 		const char* message = temp.c_str();
 
 		int l = strlen(message);
@@ -168,8 +164,8 @@ void server()
 		b2 = (l >> 8) & 255;
 		ss3 << b2 << b1 << message;
 
-		string realMsg = ss3.str();
-		string recMessage = "";
+		std::string realMsg = ss3.str();
+		std::string recMessage = "";
 
 		res = clock();
 		server.SendData(realMsg);
@@ -178,23 +174,23 @@ void server()
 
 		tokens.clear();
 
-		file << realMsg << endl;
+		file << realMsg << std::endl;
 
 		if (count == 2) break;
 	}
 
-	file << endl;
-	file << "Requests transmitted = 10000" << endl;
-	file << "Responses received = 10000" << endl;
-	file << "Req. run duration (ms) = " << mReq << endl;
-	file << "Res. run duration (ms) = " << mRes << endl;
-	file << "Trans. run duration (ms) = " << mRes - 0 << endl;
-	file << "Actual req. pace = " << mReq / 10000 << endl;
-	file << "Actual res. pace = " << mRes / 10000 << endl;
-	file << "Config. pace = " << 3 << endl;
-	file << "Transaction avg. = " << mRes / 10000 << endl;
-	file << "Your name: " << endl;
-	file << "Name of the other student = " << endl;
+	file << std::endl;
+	file << "Requests transmitted = 10000" << std::endl;
+	file << "Responses received = 10000" << std::endl;
+	file << "Req. run duration (ms) = " << mReq << std::endl;
+	file << "Res. run duration (ms) = " << mRes << std::endl;
+	file << "Trans. run duration (ms) = " << mRes - 0 << std::endl;
+	file << "Actual req. pace = " << mReq / 10000 << std::endl;
+	file << "Actual res. pace = " << mRes / 10000 << std::endl;
+	file << "Config. pace = " << 3 << std::endl;
+	file << "Transaction avg. = " << mRes / 10000 << std::endl;
+	file << "Your name: " << std::endl;
+	file << "Name of the other student = " << std::endl;
 	file.close();
 
 	server.CloseConnection();

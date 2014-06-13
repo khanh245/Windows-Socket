@@ -6,11 +6,11 @@ void ClientSocket::ConnectToServer(const char *ipAddress, int port)
 	myAddress.sin_addr.s_addr = inet_addr(ipAddress);
 	myAddress.sin_port = htons(port);
 
-	cout << "ClientSocket: Connecting to " << ipAddress << ":" << port << endl;
+	std::cout << "ClientSocket: Connecting to " << ipAddress << ":" << port << std::endl;
 
 	if (connect(mySocket, (sockaddr*) &myAddress, sizeof(myAddress)) == SOCKET_ERROR)
 	{
-		cerr << "ClientSocket: Failed to connect\n";
+		std::cerr << "ClientSocket: Failed to connect\n";
 		WSACleanup();
 	}
 
@@ -27,7 +27,7 @@ void ClientSocket::ConnectToServer(const char *ipAddress, int port)
 	len = sizeof(otherAddress);
 	getpeername(mySocket, (sockaddr*)&otherAddress, &len);
 
-	cout << "Connected..." << endl;
+	std::cout << "Connected..." << std::endl;
 }
 
 char* ClientSocket::getServerIP() const
