@@ -73,7 +73,6 @@
   <ItemGroup>
     <ClInclude Include="ClientSocket.h" />
     <ClInclude Include="KronosPayload.h" />
-    <ClInclude Include="NetworkThread.h" />
     <ClInclude Include="ServerSocket.h" />
     <ClInclude Include="Socket.h" />
   </ItemGroup>

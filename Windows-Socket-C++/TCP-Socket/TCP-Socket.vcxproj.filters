@@ -44,8 +44,5 @@
     <ClInclude Include="Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
