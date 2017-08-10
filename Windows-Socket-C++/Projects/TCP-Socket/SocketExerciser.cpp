@@ -19,19 +19,19 @@ void client()
 	clock_t mReq = 0;
 	clock_t mRes = 0;
 
-	srand((unsigned int)time(NULL));
+	srand(static_cast<unsigned int>(time(nullptr)));
 
-	bool ready = false;
+	auto ready = false;
 	Kronos::ClientSocket sockClient;
 	SYSTEMTIME st;
 
 	std::cout << "Attempting to connect..." << std::endl;
 	sockClient.ConnectToServer("127.0.0.1", 2605);
 
-	int i = 0;
+	auto i = 0;
 	std::ofstream file("ThreadedTestClient.log");
 
-	while (sockClient.isDataAvail() || i < 2)
+	while (sockClient.isDataAvailable() || i < 2)
 	{
 		//int time = rand() % 4 + 1;
 
@@ -57,33 +57,32 @@ void client()
 		break;
 		}*/
 
-		int port = sockClient.getPort();
+		int port = sockClient.Port();
 		std::stringstream ss, ss3;
 
 		GetLocalTime(&st);
 		char timestamp[16] = { 0 };
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-		ss << "REQ|" << timestamp << "|ReqID564530" << i << mess << 0 << "|" << sockClient.getIP() << "|" << sockClient.getPort() << "|1|" << sockClient.getServerIP() << "|" << sockClient.getServerPort() << rest;
+		ss << "REQ|" << timestamp << "|ReqID564530" << i << mess << 0 << "|" << sockClient.IPAddress() << "|" << sockClient.Port() << "|1|" << sockClient.ServerIPAddress() << "|" << sockClient.ServerPort() << rest;
 		std::string temp = ss.str();
 		const char* message = temp.c_str();
 
 		int l = strlen(message);
-		unsigned char b1, b2;
 
-		b1 = l & 255;
-		b2 = (l >> 8) & 255;
+		unsigned char b1 = l & 255;
+		unsigned char b2 = l >> 8 & 255;
 		ss3 << b2 << b1 << message;
 
 		std::string realMsg = ss3.str();
 		std::string recMessage = "";
 
 		req = clock();
-		sockClient.SendData(realMsg);
+		sockClient.Send(realMsg);
 		req = clock() - req;
 		mReq += req;
 
 		res = clock();
-		sockClient.RecvData(recMessage);
+		sockClient.Receive(recMessage);
 		res = clock() - res;
 		mRes += res;
 
@@ -125,10 +124,10 @@ void server()
 	std::string reqMsg = "";
 
 
-	while (server.isDataAvail() || count != 2)
+	while (server.isDataAvailable() || count != 2)
 	{
 		req = clock();
-		int result = server.RecvData(reqMsg);
+		int result = server.Receive(reqMsg);
 		req = clock() - req;
 		mReq += req;
 
@@ -154,22 +153,21 @@ void server()
 		sprintf_s(timestamp, "%02d%02d%02d%04d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
 		std::stringstream ss, ss3;
-		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.getClientIP() << "|" << server.getClientPort() << "|1|" << server.getIP() << "|" << server.getPort() << "|Good-OIT-Req|";
+		ss << sendMessage << timestamp << "|" << reqID << "|" << tokens[3] << "|" << tokens[4] << "|" << "28" << "|" << server.ClientIPAddress() << "|" << server.ClientPort() << "|1|" << server.IPAddress() << "|" << server.Port() << "|Good-OIT-Req|";
 		std::string temp = ss.str();
 		const char* message = temp.c_str();
 
 		int l = strlen(message);
-		unsigned char b1, b2;
 
-		b1 = l & 255;
-		b2 = (l >> 8) & 255;
+		unsigned char b1 = l & 255;
+		unsigned char b2 = l >> 8 & 255;
 		ss3 << b2 << b1 << message;
 
 		std::string realMsg = ss3.str();
 		std::string recMessage = "";
 
 		res = clock();
-		server.SendData(realMsg);
+		server.Send(realMsg);
 		res = clock() - res;
 		mRes += res;
 
@@ -197,10 +195,8 @@ void server()
 
 int main()
 {
-	//client();
-
-	Kronos::Thread(new Kronos::IRunnable()).Start();
-	server();
+	client();
+	//server();
 
 	return 0;
 }

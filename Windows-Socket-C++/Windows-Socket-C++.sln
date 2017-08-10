@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCP-Socket", "TCP-Socket\TCP-Socket.vcxproj", "{612B16DF-ECC6-4075-ADD7-84AAE8571F12}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{6D9F476D-7E59-4E9D-93BA-F62E89A6F574}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCP-Socket", "Projects\TCP-Socket\TCP-Socket.vcxproj", "{612B16DF-ECC6-4075-ADD7-84AAE8571F12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{612B16DF-ECC6-4075-ADD7-84AAE8571F12} = {6D9F476D-7E59-4E9D-93BA-F62E89A6F574}
 	EndGlobalSection
 EndGlobal
