@@ -8,7 +8,7 @@
 	Wrap the SOCKET in Winsock2 to use for Server/Client
 	int TCP/IP communication, possibly UDP and generic data
 	communication in network
-	**********************************************************************/
+**********************************************************************/
 
 #ifndef _SOCKET_H_
 #define _SOCKET_H_
