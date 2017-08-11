@@ -11,6 +11,7 @@
 #define _SERVERSOCKET_H_
 
 #include "Socket.h"
+#include <future>
 
 namespace Kronos
 {
@@ -21,6 +22,11 @@ namespace Kronos
 	{
 	public:
 		/// <summary>
+		/// Intializes a new instance of the Server socket class.
+		/// </summary>
+		ServerSocket();
+
+		/// <summary>
 		/// Listens to incoming connection.
 		/// </summary>
 		void Listen();
@@ -29,13 +35,20 @@ namespace Kronos
 		/// Binds to a port.
 		/// </summary>
 		/// <param name="port">The speicifc port.</param>
-		void Bind(int port);
+		void Bind(const int& port);
 
 		/// <summary>
-		/// Starts hosting/listening to connection.
+		/// Starts hosting the socket on a specific port.
 		/// </summary>
-		/// <param name="port">The specific port.</param>
-		void StartHosting(int port);
+		/// <param name="port">The port to host.</param>
+		void StartHosting(const int& port);
+
+		/// <summary>
+		/// Starts hosting the socket on a specific port asynchronously.
+		/// </summary>
+		/// <param name="port">The port to host.</param>
+		/// <returns>The value in future.</returns>
+		std::shared_future<void> StartHostingAsync(const int& port);
 
 		/// <summary>
 		/// Gets the client IP address.
@@ -50,6 +63,12 @@ namespace Kronos
 		/// <param name="id">The client ID.</param>
 		/// <returns>The client port.</returns>
 		int	ClientPort(const int& id = 0) const;
+
+	private:
+		/// <summary>
+		/// The is stopped flag.
+		/// </summary>
+		std::atomic_bool isStopped;
 	};
 }
 

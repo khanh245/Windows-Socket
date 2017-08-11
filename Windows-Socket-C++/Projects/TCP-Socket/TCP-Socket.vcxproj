@@ -68,14 +68,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientSocket.cpp" />
-    <ClCompile Include="KronosPayload.cpp" />
     <ClCompile Include="ServerSocket.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketExerciser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSocket.h" />
-    <ClInclude Include="KronosPayload.h" />
     <ClInclude Include="ServerSocket.h" />
     <ClInclude Include="Socket.h" />
   </ItemGroup>

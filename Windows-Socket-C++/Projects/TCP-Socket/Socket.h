@@ -78,7 +78,6 @@ namespace Kronos
 		char* ip;
 
 	public:
-
 		/// <summary>
 		/// Sends the desired data through the socket.
 		/// </summary>
@@ -105,7 +104,7 @@ namespace Kronos
 		/// Checks to see if any data is available.
 		/// </summary>
 		/// <returns><c>true</c> if data is available. <c>false</c> otherwise.</returns>
-		bool isDataAvailable() const;
+		bool IsDataAvailable() const;
 
 		/// <summary>
 		/// Closes the socket.

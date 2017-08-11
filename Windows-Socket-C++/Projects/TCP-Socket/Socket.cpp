@@ -56,7 +56,7 @@ int Kronos::Socket::Send(std::string& buffer) const
 }
 
 /// <inheritdoc />
-bool Kronos::Socket::isDataAvailable() const
+bool Kronos::Socket::IsDataAvailable() const
 {
 	timeval timeout;
 	memset(&timeout, 0, sizeof(timeval));

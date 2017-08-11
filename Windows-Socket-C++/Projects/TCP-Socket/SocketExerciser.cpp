@@ -10,8 +10,6 @@
 #include "ServerSocket.h"
 #include "ClientSocket.h"
 
-#include "Thread.h"
-
 void client()
 {
 	clock_t req = 0;
@@ -31,7 +29,7 @@ void client()
 	auto i = 0;
 	std::ofstream file("ThreadedTestClient.log");
 
-	while (sockClient.isDataAvailable() || i < 2)
+	while (sockClient.IsDataAvailable() || i < 2)
 	{
 		//int time = rand() % 4 + 1;
 
@@ -124,7 +122,7 @@ void server()
 	std::string reqMsg = "";
 
 
-	while (server.isDataAvailable() || count != 2)
+	while (server.IsDataAvailable() || count != 2)
 	{
 		req = clock();
 		int result = server.Receive(reqMsg);
@@ -195,8 +193,14 @@ void server()
 
 int main()
 {
-	client();
-	//server();
+	//auto server = new Kronos::ServerSocket();
+	//auto hostTask = server->StartHostingAsync(3569);
+	//
+	//auto client = new Kronos::ClientSocket();
+	//client->ConnectToServer("127.0.0.1", 3569);
+	//hostTask.wait();
 
+	//delete client;
+	//delete server;
 	return 0;
 }

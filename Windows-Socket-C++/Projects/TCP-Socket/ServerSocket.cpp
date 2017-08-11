@@ -1,10 +1,23 @@
 #include "ServerSocket.h"
 
 /// <inheritdoc />
-void Kronos::ServerSocket::StartHosting(int port)
+Kronos::ServerSocket::ServerSocket() :
+	isStopped(false)
+{
+}
+
+
+/// <inheritdoc />
+void Kronos::ServerSocket::StartHosting(const int& port)
 {
 	Bind(port);
 	Listen();
+}
+
+/// <inheritdoc />
+std::shared_future<void> Kronos::ServerSocket::StartHostingAsync(const int& port)
+{
+	return std::async(std::launch::async, &ServerSocket::StartHosting, this, port);
 }
 
 /// <inheritdoc />
@@ -24,18 +37,12 @@ void Kronos::ServerSocket::Listen()
 	this->acceptSocket = accept(this->socketInstance, reinterpret_cast<sockaddr*>(&this->clientAddress), &len);
 	std::cout << "ServerSocket: Client connected: " << this->ClientIPAddress() << ":" << this->ClientPort() << std::endl;
 
-	//while (this->acceptSocket < 0)
-	//{
-	//	this->acceptSocket = accept(backupSocket, nullptr, nullptr);
-	//	std::cout << "ServerSocket: Client connected" << ClientIPAddress() << ":" << ClientPort() << std::endl;
-	//}
-
 	getpeername(this->acceptSocket, reinterpret_cast<sockaddr*>(&this->clientAddress), reinterpret_cast<int*>(sizeof this->clientAddress));
 	this->socketInstance = this->acceptSocket;
 }
 
 /// <inheritdoc />
-void Kronos::ServerSocket::Bind(int port)
+void Kronos::ServerSocket::Bind(const int& port)
 {
 	this->address.sin_family = AF_INET;
 	this->address.sin_addr.s_addr = inet_addr("0.0.0.0");
@@ -60,7 +67,7 @@ void Kronos::ServerSocket::Bind(int port)
 	}
 
 	addr.s_addr = *reinterpret_cast<u_long *>(hosts->h_addr_list[i - 1]);
-	ip = inet_ntoa(addr);
+	this->ip = inet_ntoa(addr);
 	this->port = htons(this->address.sin_port);
 }
 
